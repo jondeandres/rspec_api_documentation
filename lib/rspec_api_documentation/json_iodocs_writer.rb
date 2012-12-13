@@ -35,7 +35,9 @@ module RspecApiDocumentation
     end
 
     def examples
-      @index.examples.map { |example| JsonExample.new(example, @configuration) }
+      @index.examples.select do |example|
+        example.metadata[:requests] && example.metadata[:requests].any?
+      end.map { |example| JsonExample.new(example, @configuration) }
     end
 
     def to_json
